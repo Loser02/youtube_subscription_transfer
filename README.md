@@ -55,6 +55,8 @@ Enter the email addresses of the Google accounts you'd like to grant access to y
 
 5. Once the transfer is complete, the script will display a confirmation message.
 
+(dont forget to copy the python script)
+
 ## Note
 
 Please keep your `client_secrets.json` file private and secure. It contains sensitive information about your Google API project, and sharing it could expose your project to unauthorized access or potential abuse.
