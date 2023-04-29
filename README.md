@@ -61,4 +61,5 @@ Enter the email addresses of the Google accounts you'd like to grant access to y
 
 Please keep your `client_secrets.json` file private and secure. It contains sensitive information about your Google API project, and sharing it could expose your project to unauthorized access or potential abuse.
 
+also the script might say it has finished transferring but if it didnt transfer all of them then that means you have reached the daily quota and have to do it again in 24 hours 
 
