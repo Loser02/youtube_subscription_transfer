@@ -1,5 +1,21 @@
-# youtube_data_transfer
-for those scared google might ban their youtube account cuase of using revanced 
+# YouTube Data Transfer
+
+This script allows you to transfer your YouTube subscriptions and playlists from one Google account to another. Due to API limitations, transferring watch history is not possible.
+
+## Prerequisites
+
+To use this script, you need to have Python installed on your system, along with the following packages:
+
+- `google-auth`
+- `google-auth-oauthlib`
+- `google-auth-httplib2`
+- `google-api-python-client`
+
+You can install the required packages using pip: pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+
+
+YOU NEED THE .JSON FILE TO RUN THIS AND ADD TEST USERS SO API ISNT BLOCKED SO PLEASE DO THAT BY= 
+
 1. MAKE THE client_secrets.json FILE:
 STEP 1=Go to the https://console.cloud.google.com/
 STEP 2=Sign in with your Google account if you haven't already.
@@ -27,7 +43,20 @@ STEP 3=Scroll down to the "Test users" section.
 Click "Add Users" to add test users.
 Enter the email addresses of the Google accounts you'd like to grant access to your app. These should be the email addresses of the source and target accounts you want to transfer data between. Click "SAVE" to save the test users. <img width="1920" alt="image" src="https://user-images.githubusercontent.com/127698874/235309879-8652d891-6ff9-40c4-b9aa-52a7d4ac148a.png">
 
-3. RUNNING PYTHON SCRIPT:
-STEP 1=run this command pip install google-api-python-client google-auth google-auth-httplib2 google-auth-oauthlib
-STEP 2=run this command python transfer_youtube_data.py
- and that should do it 
+## Usage
+
+1. Open a terminal or command prompt and navigate to the directory containing the `transfer_youtube_data.py` script and the `client_secrets.json` file.
+
+2. Run the script: python transfer_youtube_data.py
+
+3. The script will prompt you to authorize access to your Google accounts. First, authorize the source account (the account you want to transfer data from) and then the target account (the account you want to transfer data to).
+
+4. The script will transfer your YouTube subscriptions and playlists. Watch history cannot be transferred due to API limitations.
+
+5. Once the transfer is complete, the script will display a confirmation message.
+
+## Note
+
+Please keep your `client_secrets.json` file private and secure. It contains sensitive information about your Google API project, and sharing it could expose your project to unauthorized access or potential abuse.
+
+
