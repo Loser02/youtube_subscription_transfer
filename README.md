@@ -1,6 +1,6 @@
 # YouTube Data Transfer
 
-This script allows you to transfer your YouTube subscriptions and playlists from one Google account to another. Due to API limitations, transferring watch history is not possible.
+This script allows you to transfer your YouTube subscriptions.
 
 ## Prerequisites
 
