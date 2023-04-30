@@ -1,6 +1,7 @@
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
+import json
 
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -31,6 +32,19 @@ def get_subscriptions(youtube, channelId):
 
     return subscriptions
 
+def read_transferred_ids(filename):
+    try:
+        with open(filename, "r") as file:
+            transferred_ids = json.load(file)
+    except FileNotFoundError:
+        transferred_ids = []
+
+    return transferred_ids
+
+def write_transferred_ids(filename, ids):
+    with open(filename, "w") as file:
+        json.dump(ids, file)
+
 def main():
     scope = [
         "https://www.googleapis.com/auth/youtube.force-ssl",
@@ -45,24 +59,31 @@ def main():
     source_channel_id = source_channel_request.execute()["items"][0]["id"]
 
     subscriptions = get_subscriptions(youtube_source, source_channel_id)
+    transferred_filename = "transferred_subscriptions.json"
+    transferred_ids = read_transferred_ids(transferred_filename)
 
     # Transfer subscriptions
     for channel_id in subscriptions:
-        try:
-            youtube_target.subscriptions().insert(part="snippet", body={
-                
-  "snippet": {
-                    "resourceId": {
-                        "kind": "youtube#channel",
-                        "channelId": channel_id
+        if channel_id not in transferred_ids:
+            try:
+                youtube_target.subscriptions().insert(part="snippet", body={
+                    "snippet": {
+                        "resourceId": {
+                            "kind": "youtube#channel",
+                            "channelId": channel_id
+                        }
                     }
-                }
-            }).execute()
-        except googleapiclient.errors.HttpError as error:
-            print(f"Error: {error}")
-            print(f"Skipping subscription to channel ID {channel_id}")
+                }).execute()
+                transferred_ids.append(channel_id)
+            except googleapiclient.errors.HttpError as error:
+                print(f"Error: {error}")
+                print(f"Skipping subscription to channel ID {channel_id}")
+        else:
+            print(f"Subscription to channel ID {channel_id} already transferred.")
 
+    write_transferred_ids(transferred_filename, transferred_ids)
     print("Subscriptions transferred successfully.")
 
 if __name__ == "__main__":
     main()
+
