@@ -32,16 +32,16 @@ def get_subscriptions(youtube, channelId):
 
     return subscriptions
 
-def read_transferred_ids(filename):
+def read_ids(filename):
     try:
         with open(filename, "r") as file:
-            transferred_ids = json.load(file)
+            ids = json.load(file)
     except FileNotFoundError:
-        transferred_ids = []
+        ids = []
 
-    return transferred_ids
+    return ids
 
-def write_transferred_ids(filename, ids):
+def write_ids(filename, ids):
     with open(filename, "w") as file:
         json.dump(ids, file)
 
@@ -60,7 +60,9 @@ def main():
 
     subscriptions = get_subscriptions(youtube_source, source_channel_id)
     transferred_filename = "transferred_subscriptions.json"
-    transferred_ids = read_transferred_ids(transferred_filename)
+    skipped_filename = "skipped_subscriptions.json"
+    transferred_ids = read_ids(transferred_filename)
+    skipped_ids = read_ids(skipped_filename)
 
     # Transfer subscriptions
     for channel_id in subscriptions:
@@ -78,12 +80,16 @@ def main():
             except googleapiclient.errors.HttpError as error:
                 print(f"Error: {error}")
                 print(f"Skipping subscription to channel ID {channel_id}")
+                if channel_id not in skipped_ids:
+                    skipped_ids.append(channel_id)
         else:
             print(f"Subscription to channel ID {channel_id} already transferred.")
 
-    write_transferred_ids(transferred_filename, transferred_ids)
+    write_ids(transferred_filename, transferred_ids)
+    write_ids(skipped_filename, skipped_ids)
     print("Subscriptions transferred successfully.")
 
 if __name__ == "__main__":
     main()
+
 
