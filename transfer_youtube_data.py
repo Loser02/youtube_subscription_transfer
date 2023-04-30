@@ -66,7 +66,7 @@ def main():
 
     # Transfer subscriptions
     for channel_id in subscriptions:
-        if channel_id not in transferred_ids:
+        if channel_id not in transferred_ids and channel_id not in skipped_ids:
             try:
                 youtube_target.subscriptions().insert(part="snippet", body={
                     "snippet": {
@@ -83,7 +83,7 @@ def main():
                 if channel_id not in skipped_ids:
                     skipped_ids.append(channel_id)
         else:
-            print(f"Subscription to channel ID {channel_id} already transferred.")
+            print(f"Subscription to channel ID {channel_id} already transferred or skipped.")
 
     write_ids(transferred_filename, transferred_ids)
     write_ids(skipped_filename, skipped_ids)
